@@ -17,8 +17,8 @@ public class Register {
     String url = "https://crio-qkart-frontend-qa.vercel.app/register";
     public String lastGeneratedUsername = "";
 
-    public Register(WebDriver driver2) {
-        this.driver = driver2;
+    public Register(WebDriver driver) {
+        this.driver = driver;
     }
 
     public void navigateToRegisterPage() {

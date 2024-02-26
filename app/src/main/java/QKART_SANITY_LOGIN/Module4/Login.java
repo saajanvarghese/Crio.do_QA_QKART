@@ -14,8 +14,8 @@ public class Login {
     WebDriver driver;
     String url = "https://crio-qkart-frontend-qa.vercel.app/login";
 
-    public Login(WebDriver driver2) {
-        this.driver = driver2;
+    public Login(WebDriver driver) {
+        this.driver = driver;
     }
 
     public void navigateToLoginPage() {

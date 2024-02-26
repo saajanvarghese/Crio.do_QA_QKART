@@ -601,7 +601,7 @@ public class QkartSanityV2 {
         logStatus("End TestCase",
         "Test Case 9: Verify that the Privacy Policy, About Us are displayed correctly ",
         "PASS");
-        takeScreenshot(driver, "EndTestCase", "TestCase9");
+        //takeScreenshot(driver, "EndTestCase", "TestCase9");
 
         return status;
     }
