@@ -7,7 +7,7 @@
 // import QKART_TESTNG.pages.SearchResult;
 // import io.github.bonigarcia.wdm.WebDriverManager;
 
-// import static org.testng.Assert.*;
+// import  org.testng.Assert;
 
 // import java.io.File;
 // import java.net.MalformedURLException;
@@ -27,11 +27,9 @@
 // import org.openqa.selenium.WebElement;
 // import org.openqa.selenium.chrome.ChromeDriver;
 // import org.openqa.selenium.chrome.ChromeOptions;
-// import org.openqa.selenium.remote.DesiredCapabilities;
-// import org.openqa.selenium.remote.RemoteWebDriver;
+
 // import org.openqa.selenium.support.ui.ExpectedConditions;
 // import org.openqa.selenium.support.ui.WebDriverWait;
-// import org.testng.Assert;
 // import org.testng.annotations.*;
 
 // public class QKART_Tests {
@@ -39,12 +37,13 @@
 //     static WebDriver driver;
 //     public static String lastGeneratedUserName;
 
+
 //      @BeforeSuite
 //     public static void createDriver() throws MalformedURLException {
  
 //         ChromeOptions options = new ChromeOptions();
 
-//                 WebDriver driver = new ChromeDriver(options);
+//         driver = new ChromeDriver(options);
 
 // 		WebDriverManager.chromedriver().setup();
 
@@ -59,7 +58,7 @@
 //    Boolean status;
 //     logStatus("Start TestCase", "Test Case 1: Verify User Registration", "DONE");
 //     //takeScreenshot(driver, "StartTestCase", "TestCase1");
-
+// System.out.println("Driver  " + driver);
 //    // Visit the Registration page and register a new user
 //    Register registration = new Register(driver);
 //    registration.navigateToRegisterPage();

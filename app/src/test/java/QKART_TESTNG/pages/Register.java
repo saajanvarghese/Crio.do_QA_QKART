@@ -24,7 +24,7 @@ public class Register {
     }
 
     public void navigateToRegisterPage() {
-        if (!driver.getCurrentUrl().equals(this.url)) {
+        if (driver.getCurrentUrl().equals(this.url)) {
             driver.get(this.url);
         }
     }

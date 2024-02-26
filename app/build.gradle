@@ -29,6 +29,10 @@ repositories {
 dependencies {
     //testCompile group: 'junit', name: 'junit', version: '4.12'
 
+        // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
+   
+
 //WebDriver manager Dependency
 // https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager
 implementation group: 'io.github.bonigarcia', name: 'webdrivermanager', version: '5.6.4'
@@ -88,3 +92,5 @@ test {
 }
 
 mainClassName = 'QKART_SANITY_LOGIN.Module4.QkartSanityV2'
+
+

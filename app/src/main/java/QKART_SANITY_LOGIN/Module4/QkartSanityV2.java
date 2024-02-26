@@ -561,7 +561,7 @@ public class QkartSanityV2 {
 
         if (!status) {
             logStatus("Step Failure", "Verifying parent page url didn't change on privacy policy link click failed", status ? "PASS" : "FAIL");
-            takeScreenshot(driver, "Failure", "TestCase09");
+            //takeScreenshot(driver, "Failure", "TestCase09");
             logStatus("End TestCase",
                     "Test Case 9: Verify that the Privacy Policy, About Us are displayed correctly ",
                     status ? "PASS" : "FAIL");
@@ -753,7 +753,7 @@ public class QkartSanityV2 {
 
             // System.out.println("");
 
-            // Execute Test Case 4
+            //Execute Test Case 4
             totalTests += 1;
             status = TestCase04(driver);
             if (status) {
@@ -762,7 +762,7 @@ public class QkartSanityV2 {
 
             System.out.println("");
 
-            // // Execute Test Case 5
+            // Execute Test Case 5
             // totalTests += 1;
             // status = TestCase05(driver);
             // if (status) {

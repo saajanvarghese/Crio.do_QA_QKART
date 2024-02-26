@@ -109,38 +109,33 @@ public class SearchResult {
              * Validate that the contents of expectedTableBody are present in the table body
              * in the same order
              */
-            WebElement sizeChartParent = driver.findElement(By.xpath("//div[@class=\"MuiDialog-container MuiDialog-scrollPaper css-ekeie0\"]/div"));
-            WebElement tableElement = sizeChartParent.findElement(By.xpath("//table[@class=\"MuiTable-root css-1v2fgo1\"]"));
-            //List<WebElement> tableHeader = tableElement.findElement(By.xpath("//thead[@class=\"MuiTableHead-root css-1wbz3t9\"]")).findElements(By.xpath("//thead[@class=\"MuiTableHead-root css-1wbz3t9\"]//tr//th"));
-
-            List<WebElement> tableHeader = driver.findElements(By.xpath("//tr[@class=\"MuiTableRow-root MuiTableRow-head css-mnddxn\"]//th"));
-
-            String tempHeaderValue;
             for (int i = 0; i < expectedTableHeaders.size(); i++) {
-                tempHeaderValue = tableHeader.get(i).getText();
+                String expectedTableHeader = expectedTableHeaders.get(i);
+                int index = i + 1;
 
-                if (!expectedTableHeaders.get(i).equals(tempHeaderValue)) {
-                    System.out.println("Failure in Header Comparison: Expected:  " + expectedTableHeaders.get(i)
-                            + " Actual: " + tempHeaderValue);
+                WebElement actualTableHeaderElement = driver
+                        .findElement(By.xpath("//table/thead/tr/th[" + index + "]"));
+
+                String actualTableHeader = actualTableHeaderElement.getText();
+
+                if (!expectedTableHeader.equals(actualTableHeader)) {
                     status = false;
                 }
+
             }
 
-            // List<WebElement> tableBodyRows = tableElement.findElement(By.xpath("//tbody[@class=\"MuiTableBody-root css-1xnox0e\"]"))
-            //         .findElements(By.xpath("//tbody[@class=\"MuiTableBody-root css-1xnox0e\"]//tr"));
+            for(int i = 0; i< expectedTableHeaders.size(); i++){
+                List<String> rowData = expectedTableBody.get(i);
 
-            List<WebElement> tableBodyRows = driver.findElements(By.xpath("//tbody[@class='MuiTableBody-root css-1xnox0e']//tr"));
+                for(int j=0; j < rowData.size(); j++){
+                    String expectedTableBodyText = rowData.get(j);
 
-            List<WebElement> tempBodyRow;
-            for (int i = 0; i < expectedTableBody.size(); i++) {
-                tempBodyRow = tableBodyRows.get(i).findElements(By.xpath("//tr[@class=\"MuiTableRow-root css-171yt5d\"]//td"));
+                    int row = i+1;
+                    int column = j+1;
 
-                for (int j = 0; j < expectedTableBody.get(i).size(); j++) {
-                    tempHeaderValue = tempBodyRow.get(j).getText();
-
-                    if (!expectedTableBody.get(i).get(j).equals(tempHeaderValue)) {
-                        System.out.println("Failure in Body Comparison: Expected:  " + expectedTableBody.get(i).get(j)
-                                + " Actual: " + tempHeaderValue);
+                    WebElement tableBodyElement = driver.findElement(By.xpath("//table/tbody/tr["+row+"]/td["+column+"]"));
+                    String actualTableBodyText = tableBodyElement.getText();
+                    if(!expectedTableBodyText.equals(actualTableBodyText)){
                         status = false;
                     }
                 }
