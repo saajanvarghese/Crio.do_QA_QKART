@@ -6,7 +6,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 
@@ -19,8 +18,8 @@ public class Login {
     }
 
     public void navigateToLoginPage() {
-        if (!this.driver.getCurrentUrl().equals(this.url)) {
-            this.driver.get(this.url);
+        if (!driver.getCurrentUrl().equals(this.url)) {
+            driver.get(this.url);
         }
     }
 

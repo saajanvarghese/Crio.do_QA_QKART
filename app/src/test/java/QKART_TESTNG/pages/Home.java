@@ -21,8 +21,8 @@ public class Home {
     }
 
     public void navigateToHome() {
-        if (!this.driver.getCurrentUrl().equals(this.url)) {
-            this.driver.get(this.url);
+        if (!driver.getCurrentUrl().equals(this.url)) {
+            driver.get(this.url);
         }
     }
 
@@ -50,14 +50,28 @@ public class Home {
         try {
             // Clear the contents of the search box and Enter the product name in the search
             // box
-            WebElement searchBox = driver.findElement(By.xpath("//input[@name='search'][1]"));
+            boolean status;
+            WebElement searchBox = driver.findElement(By.xpath("//div[@class='header MuiBox-root css-0']//div[2]//div//input"));
             searchBox.clear();
             searchBox.sendKeys(product);
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+            wait.until(ExpectedConditions.or(
+                // First condition: Check if the product is found
+                ExpectedConditions.textToBePresentInElementLocated(By.xpath("//p[contains(text(),'"+product+"')]"), product),
+                // Second condition: Check if the "No products found" message is present
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//h4[text() = ' No products found ']"))
+            ));
 
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-            wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath(String
-                    .format("//div[@class='MuiCardContent-root css-1qw96cp'][1]/p[contains(text(),'%s')]", product))));
-            //Thread.sleep(3000);
+            // WebElement searchedProduct= driver.findElement(By.xpath("//p[@class='MuiTypography-root MuiTypography-body1 css-yg30e6']"));
+            // String searchedProductText = searchedProduct.getText();
+            // System.out.println(searchedProductText);
+            // if(searchedProductText.contains(product)){
+            //     status = true;
+            // }
+            // else{
+            //     status = false;
+            // }
+
             return true;
         } catch (Exception e) {
             System.out.println("Error while searching for a product: " + e.getMessage());
@@ -71,10 +85,8 @@ public class Home {
     public List<WebElement> getSearchResults() {
         List<WebElement> searchResults = new ArrayList<WebElement>() {
         };
-        try {
-            // Find all webelements corresponding to the card content section of each of
-            // search results  css-1qw96cp
-            searchResults = driver.findElements(By.className("css-1qw96cp"));
+        try {  //css-yg30e6
+            searchResults = driver.findElements(By.className("css-yg30e6"));
             return searchResults;
         } catch (Exception e) {
             System.out.println("There were no search results: " + e.getMessage());

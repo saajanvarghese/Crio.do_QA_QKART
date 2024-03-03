@@ -2,7 +2,6 @@
 plugins {
     id 'java'
 }
-
 // java {
 //     // Other java-related configurations
 

@@ -24,7 +24,7 @@ public class Register {
     }
 
     public void navigateToRegisterPage() {
-        if (driver.getCurrentUrl().equals(this.url)) {
+        if (!driver.getCurrentUrl().equals(this.url)) {
             driver.get(this.url);
         }
     }
@@ -37,18 +37,19 @@ public class Register {
     public Boolean registerUser(String Username, String Password, Boolean makeUsernameDynamic)
             throws InterruptedException {
         // Find the Username Text Box
-        WebElement username_txt_box = this.driver.findElement(By.id("username"));
+        WebElement username_txt_box = this.driver.findElement(By.xpath("//input[@id='username']"));
 
         // Get time stamp for generating a unique username
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
         String test_data_username;
-        if (makeUsernameDynamic)
+        if (makeUsernameDynamic){
             // Concatenate the timestamp to string to form unique timestamp
             test_data_username = Username + "_" + String.valueOf(timestamp.getTime());
-        else
+        }
+        else{
             test_data_username = Username;
-
+        }
         // Type the generated username in the username field
         this.clearTextbox(username_txt_box);
         username_txt_box.sendKeys(test_data_username);
