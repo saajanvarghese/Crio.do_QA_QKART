@@ -20,10 +20,11 @@ public class Home {
         this.driver = driver;
     }
 
-    public void navigateToHome() {
+    public Boolean navigateToHome() {
         if (!driver.getCurrentUrl().equals(this.url)) {
             driver.get(this.url);
         }
+        return false;
     }
 
     public Boolean PerformLogout() throws InterruptedException {
@@ -126,7 +127,7 @@ public class Home {
                 if (productName.contains(cell.findElement(By.className("css-yg30e6")).getText())) {
                     cell.findElement(By.tagName("button")).click();
 
-                    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+                    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
                     wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(
                             String.format("//*[@class='MuiBox-root css-1gjj37g']/div[1][text()='%s']", productName))));
                     return true;

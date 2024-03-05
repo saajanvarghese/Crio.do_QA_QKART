@@ -23,10 +23,11 @@ public class Register {
         this.driver = driver;
     }
 
-    public void navigateToRegisterPage() {
+    public Boolean navigateToRegisterPage() {
         if (!driver.getCurrentUrl().equals(this.url)) {
             driver.get(this.url);
         }
+        return false;
     }
 
     public void clearTextbox(WebElement textBox) {

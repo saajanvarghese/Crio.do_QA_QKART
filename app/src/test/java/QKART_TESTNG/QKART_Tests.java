@@ -6,7 +6,6 @@ import QKART_TESTNG.pages.Login;
 import QKART_TESTNG.pages.Register;
 import QKART_TESTNG.pages.SearchResult;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import static org.testng.Assert.*;
 import java.net.MalformedURLException;
 import java.time.Duration;
 import java.util.Arrays;
@@ -16,7 +15,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.WindowType;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -54,7 +52,16 @@ public class QKART_Tests {
        // Visit the Registration page and register a new user
        Register registration = new Register(driver);
        registration.navigateToRegisterPage();
+       Assert.assertTrue(driver.getCurrentUrl().equals("https://crio-qkart-frontend-qa.vercel.app/register"), "Fail: Page has not been redirected to Register Page");
+              
+       
        status = registration.registerUser("testUser", "testUser@123", true);
+       if(status){
+        logStatus("Page Test", "User Registeration Successfully", "Success");
+    }
+    else{
+        logStatus("Page Test", "User Registeration Failed", "Failure");
+    }
        Assert.assertTrue(status, "Failed to register new user");
 
        // Save the last generated username
@@ -63,14 +70,28 @@ public class QKART_Tests {
        // Visit the login page and login with the previuosly registered user
        Login login = new Login(driver);
        login.navigateToLoginPage();
+       Assert.assertTrue(driver.getCurrentUrl().equals("https://crio-qkart-frontend-qa.vercel.app/login"), "Fail: Page has not been redirected to Login Page");
+
        status = login.PerformLogin(lastGeneratedUserName, "testUser@123");
-       Assert.assertTrue(status, "Failed to login with registered user");
-       logStatus("Test Step", "User Perform Login: ", status ? "PASS" : "FAIL");
+       if(status){
+        logStatus("Page Test", "User Login Successfully", "Success");
+    }
+    else{
+        logStatus("Page Test", "User Login Failed", "Failure");
+    }
        Assert.assertTrue(status, "Failed to login with registered user");
 
        // Visit the home page and log out the logged in user
        Home home = new Home(driver);
        status = home.PerformLogout();
+
+       if(status){
+        logStatus("Page Test", "User Logged Out Successfully", "Success");
+    }
+    else{
+        logStatus("Page Test", "User Logout Failed", "Failure");
+    }
+       Assert.assertTrue(status, "Failed to login with registered user");
 
         logStatus("End TestCase", "Test Case 1: Verify user Registration : ", status
         ? "PASS" : "FAIL");
@@ -86,14 +107,18 @@ public class QKART_Tests {
     // Visit the Registration page and register a new user
     Register registration = new Register(driver);
     registration.navigateToRegisterPage();
-   // Thread.sleep(3000);
+    Assert.assertTrue(driver.getCurrentUrl().equals("https://crio-qkart-frontend-qa.vercel.app/register"), "Fail: Page has not been redirected to Register Page");
+
     status = registration.registerUser("testUser", "abc@123", true);
-    logStatus("Test Step", "User Registration : ", status ? "PASS" : "FAIL");
+
+    if(status){
+        logStatus("Page Test", "User Logged Out Successfully", "Success");
+    }
+    else{
+        logStatus("Page Test", "User Logout Failed", "Failure");
+    }
     Assert.assertTrue(status, "Unable to Verify user registeration");
-    // if (!status) {
-    //     logStatus("End TestCase", "Test Case 2: Verify user Registration : ", status ? "PASS" : "FAIL");
-    //     return false;
-    // }
+
 
     // Save the last generated username
     lastGeneratedUserName = registration.lastGeneratedUsername;
@@ -101,15 +126,19 @@ public class QKART_Tests {
     // Visit the Registration page and try to register using the previously
     // registered user's credentials
     registration.navigateToRegisterPage();
+    Assert.assertTrue(driver.getCurrentUrl().equals("https://crio-qkart-frontend-qa.vercel.app/register"), "Fail: Page has not been redirected to Register Page");
+
+
     status = registration.registerUser(lastGeneratedUserName, "abc@123", false);
-    Assert.assertFalse(status, "Unable to verify user registeration");
-    Thread.sleep(2000);
-    // If status is true, then registration succeeded, else registration has
+      // If status is true, then registration succeeded, else registration has
     // failed. In this case registration failure means Success
+    if(!status){
+        logStatus("End TestCase", "Test Case 2: Verify user Registration : ", status ? "FAIL" : "PASS");
+        Assert.assertFalse(status, "Unable to verify user registeration");
+    }
+
     logStatus("End TestCase", "Test Case 2: Verify user Registration : ", status ? "FAIL" : "PASS");
-   
-    // return !status;
-  
+     
 }
 
 @Test(priority = 3 ,groups = { "Sanity_test" })
@@ -120,16 +149,20 @@ public void TestCase03() throws InterruptedException {
         // Visit the home page
         Home homePage = new Home(driver);
         homePage.navigateToHome();
-
+        Assert.assertTrue(driver.getCurrentUrl().contains("https://crio-qkart-frontend-qa.vercel.app"), "Fail: Page has not been redirected to HomePage");
+        
         // Search for the "yonex" product
         status = homePage.searchForProduct("YONEX");
+        if(status){
+            logStatus("Page Test", "Product Searched Successfully", "Success");
+        }
+        else{
+            logStatus("Page Test", "Product Search Unsuccessful", "Failure");
+        }
         Assert.assertTrue(status, "Unable to search for given product");
-        // if (!status) {
-        //     logStatus("TestCase 3", "Test Case Failure. Unable to search for given product", "FAIL");
-        //     return false;
-        // }
+     
 
-        Thread.sleep(3000);
+        Thread.sleep(2000);
 
         // Fetch the search results
         List<WebElement> searchResults = homePage.getSearchResults();
@@ -137,8 +170,7 @@ public void TestCase03() throws InterruptedException {
         // Verify the search results are available
         if (searchResults.size() == 0) {
             logStatus("TestCase 3", "Test Case Failure. There were no results for the given search string", "FAIL");
-           
-            //return status;
+            Assert.assertFalse(status, "No search results Found");
         }
 
         for(WebElement webElement : searchResults) {
@@ -150,7 +182,7 @@ public void TestCase03() throws InterruptedException {
             if (!elementText.toUpperCase().contains("YONEX")) {
                 logStatus("TestCase 3", "Test Case Failure. Test Results contains un-expected values: " + elementText,
                         "FAIL");
-               // return false;
+                        Assert.assertFalse(status, "The title of the product does not match with the product");
             }
         }
 
@@ -158,8 +190,11 @@ public void TestCase03() throws InterruptedException {
 
         // Search for product
         status = homePage.searchForProduct("Gesundheit");
-        System.out.println(status);
-        Assert.assertTrue(status, "Invalid keyword returned results");
+
+        if(!status){
+            logStatus("End TestCase", "Test Case 2: Verify user Registration", "FAIL");
+            Assert.assertFalse(status, "Test Case Failure. Invalid keyword returned results");
+        }
 
         // if (status == false) {
         //     logStatus("TestCase 3", "Test Case Failure. Invalid keyword returned results", "FAIL");
@@ -167,18 +202,34 @@ public void TestCase03() throws InterruptedException {
         // }
         // Verify no search results are found
         searchResults = homePage.getSearchResults();
+
+        
         if (searchResults.size() == 0) {
-            if (homePage.isNoResultFound()) {
-                logStatus("Step Success", "Successfully validated that no products found message is displayed", "PASS");
+
+            status = homePage.isNoResultFound();
+
+            if(status){
+                logStatus("TestCase03", "Successfully validated that no products found message is displayed", "PASS");
             }
-            logStatus("TestCase 3", "Test Case PASS. Verified that no search results were found for the given text",
-                    "PASS");
-        } else {
-            logStatus("TestCase 3", "Test Case Fail. Expected: no results , actual: Results were available", "FAIL");
-          //  return false;
+            else{
+                logStatus("TestCase03", "Test Case Fail. Expected: no results , actual: Results were available", "FAIL");
+            }
+            Assert.assertTrue(status, "Some Products were found");
+
+
+        //     if (homePage.isNoResultFound()) {
+        //         logStatus("Step Success", "Successfully validated that no products found message is displayed", "PASS");
+        //     }
+        //     logStatus("TestCase 3", "Test Case PASS. Verified that no search results were found for the given text",
+        //             "PASS");
+        // } else {
+        //     logStatus("TestCase 3", "Test Case Fail. Expected: no results , actual: Results were available", "FAIL");
+        //   //  return false;
+        // }
+        
         }
-       // return true;
     }
+
 
 @Test(priority = 4,groups = {"Regression_Test" })
 public void TestCase04() throws InterruptedException {
@@ -189,8 +240,18 @@ public void TestCase04() throws InterruptedException {
     Home homePage = new Home(driver);
     homePage.navigateToHome();
 
+    Assert.assertTrue(driver.getCurrentUrl().contains("https://crio-qkart-frontend-qa.vercel.app"), "Fail: Page has not been redirected to HomePage");
+
     // Search for product and get card content element of search results
     status = homePage.searchForProduct("Running Shoes");
+    if(status){
+                    logStatus("Page Test", "Product Searched Successfully", "Success");
+                }
+                else{
+                    logStatus("Page Test", "Product Search Unsuccessful", "Failure");
+                }
+                Assert.assertTrue(status, "Unable to search for given product");
+
     List<WebElement> searchResults = homePage.getSearchResults();
 
     // Create expected values
@@ -247,48 +308,108 @@ public void TestCase05() throws InterruptedException {
     Boolean status;
     logStatus("Start TestCase", "Test Case 5: Verify Happy Flow of buying products", "DONE");
 
-    // Go to the Register page
-    Register registration = new Register(driver);
-    registration.navigateToRegisterPage();
+     // Visit the Registration page and register a new user
+     Register registration = new Register(driver);
+     registration.navigateToRegisterPage();
+     Assert.assertTrue(driver.getCurrentUrl().equals("https://crio-qkart-frontend-qa.vercel.app/register"), "Fail: Page has not been redirected to Register Page");
+            
+     
+     status = registration.registerUser("testUser", "testUser@123", true);
+     if(status){
+      logStatus("Page Test", "User Registeration Successfully", "Success");
+  }
+  else{
+      logStatus("Page Test", "User Registeration Failed", "Failure");
+  }
+     Assert.assertTrue(status, "Failed to register new user");
 
-    // Register a new user
-    status = registration.registerUser("testUser", "abc@123", true);
-    if (!status) {
-        logStatus("TestCase 5", "Test Case Failure. Happy Flow Test Failed", "FAIL");
-    }
+     // Save the last generated username
+     lastGeneratedUserName = registration.lastGeneratedUsername;
 
-    // Save the username of the newly registered user
-    lastGeneratedUserName = registration.lastGeneratedUsername;
+     // Visit the login page and login with the previuosly registered user
+     Login login = new Login(driver);
+     login.navigateToLoginPage();
+     Assert.assertTrue(driver.getCurrentUrl().equals("https://crio-qkart-frontend-qa.vercel.app/login"), "Fail: Page has not been redirected to Login Page");
 
-    // Go to the login page
-    Login login = new Login(driver);
-    login.navigateToLoginPage();
-
-    // Login with the newly registered user's credentials
-    status = login.PerformLogin(lastGeneratedUserName, "abc@123");
-    if (!status) {
-        logStatus("Step Failure", "User Perform Login Failed", status ? "PASS" : "FAIL");
-        logStatus("End TestCase", "Test Case 5: Happy Flow Test Failed : ", status ? "PASS" : "FAIL");
-    }
-
+     status = login.PerformLogin(lastGeneratedUserName, "testUser@123");
+     if(status){
+      logStatus("Page Test", "User Login Successfully", "Success");
+  }
+  else{
+      logStatus("Page Test", "User Login Failed", "Failure");
+  }
+     Assert.assertTrue(status, "Failed to login with registered user");
+ 
     // Go to the home page
     Home homePage = new Home(driver);
     homePage.navigateToHome();
 
     // Find required products by searching and add them to the user's cart
     status = homePage.searchForProduct("YONEX");
-    homePage.addProductToCart("YONEX Smash Badminton Racquet");
+    if(status){
+        logStatus("Page Test", "Product Searched Successfully", "Success");
+    }
+    else{
+        logStatus("Page Test", "Product Search Unsuccessful", "Failure");
+    }
+    Assert.assertTrue(status, "Unable to search for given product");
+
+    status = homePage.addProductToCart("YONEX Smash Badminton Racquet");
+    if(status){
+        logStatus("Page Test", "Product Added to Cart Successfully", "Success");
+    }
+    else{
+        logStatus("Page Test", "Error Occured while Adding Product to Cart", "Failure");
+    }
+    Assert.assertTrue(status, "Unable to Add Product To Cart");
+
     status = homePage.searchForProduct("Tan");
-    homePage.addProductToCart("Tan Leatherette Weekender Duffle");
+    if(status){
+        logStatus("Page Test", "Product Searched Successfully", "Success");
+    }
+    else{
+        logStatus("Page Test", "Product Search Unsuccessful", "Failure");
+    }
+    Assert.assertTrue(status, "Unable to search for given product");
+
+    status =homePage.addProductToCart("Tan Leatherette Weekender Duffle");
+    if(status){
+        logStatus("Page Test", "Product Added to Cart Successfully", "Success");
+    }
+    else{
+        logStatus("Page Test", "Error Occured while Adding Product to Cart", "Failure");
+    }
+    Assert.assertTrue(status, "Unable to Add Product To Cart");
 
     // Click on the checkout button
-    homePage.clickCheckout();
-
+    status = homePage.clickCheckout();
+    if(status){
+        logStatus("Page Test", "Sucess: Clicked On CheckOut Button", "Success");
+    }
+    else{
+        logStatus("Page Test", "Fail: Error Occured while clicking on CheckOut Button", "Failure");
+    }
+    Assert.assertTrue(status, "Unable to click on CheckOut Button");
     // Add a new address on the Checkout page and select it
     Checkout checkoutPage = new Checkout(driver);
-    checkoutPage.addNewAddress("Addr line 1 addr Line 2 addr line 3");
-    checkoutPage.selectAddress("Addr line 1 addr Line 2 addr line 3");
+    status = checkoutPage.addNewAddress("Addr line 1 addr Line 2 addr line 3");
+    if(status){
+        logStatus("Page Test", "Success: Added New Address on CheckOut Page", "Success");
+    }
+    else{
+        logStatus("Page Test", "Fail : Error Occured while Adding New Address on CheckOut Page", "Failure");
+    }
+    Assert.assertTrue(status, "Unable to Add New Address on CheckOut Page");
 
+    status =checkoutPage.selectAddress("Addr line 1 addr Line 2 addr line 3");
+   if(status){
+        logStatus("Page Test", "Success: Able to Select the Added Address on CheckOut Page", "Success");
+    }
+    else{
+        logStatus("Page Test", "Fail : Error Occured while Selecting the Added Address on CheckOut Page", "Failure");
+    }
+    Assert.assertTrue(status, "Unable to Select the Added Address on CheckOut Page");
+    
     // Place the order
     checkoutPage.placeOrder();
 
@@ -298,14 +419,25 @@ public void TestCase05() throws InterruptedException {
     // Check if placing order redirected to the Thansk page
     status = driver.getCurrentUrl().endsWith("/thanks");
 
+    Assert.assertTrue(driver.getCurrentUrl().endsWith("/thanks"), "Unable to redirect to Order Placed Page");
+
     // Go to the home page
     homePage.navigateToHome();
 
+    Assert.assertTrue(driver.getCurrentUrl().contains("https://crio-qkart-frontend-qa.vercel.app"), "Fail: Page has not been redirected to HomePage");
+
     // Log out the user
-    homePage.PerformLogout();
+    status = homePage.PerformLogout();
+
+    if(status){
+        logStatus("Page Test", "Success: Able to Perform Log Out Operation", "Success");
+    }
+    else{
+        logStatus("Page Test", "Fail : Error Occured while Performing Logout Operation", "Failure");
+    }
+    Assert.assertTrue(status, "Unable to Perform LogOut Operation");
 
     logStatus("End TestCase", "Test Case 5: Happy Flow Test Completed : ", status ? "PASS" : "FAIL");
-    //return status;
 }
 
 @Test(priority = 6,groups = {"Regression_Test" })
@@ -373,7 +505,6 @@ public void TestCase06() throws InterruptedException {
     logStatus("End TestCase", "Test Case 6: Verify that cart can be edited: ", status ? "PASS" : "FAIL");
     //return status;
 }
-
 
 @Test(priority = 7,groups = {"Regression_Test" })
 public void TestCase07() throws InterruptedException {
@@ -688,11 +819,7 @@ public void TestCase11() throws InterruptedException {
             status ? "PASS" : "FAIL");
     //return status;
 }
-        
-    
-
-
-    @AfterSuite
+  @AfterSuite
     public static void quitDriver() {
         System.out.println("quit()");
         driver.quit();

@@ -75,7 +75,7 @@ public class Checkout {
                             addressToSelect)));
             address.click();
 
-            return false;
+            return true;
         } catch (Exception e) {
             System.out.println("Exception Occurred while selecting the given address: " + e.getMessage());
             return false;
