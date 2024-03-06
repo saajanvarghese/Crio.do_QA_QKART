@@ -63,17 +63,7 @@ public class Home {
                 ExpectedConditions.presenceOfElementLocated(By.xpath("//h4[text() = ' No products found ']"))
             ));
 
-            // WebElement searchedProduct= driver.findElement(By.xpath("//p[@class='MuiTypography-root MuiTypography-body1 css-yg30e6']"));
-            // String searchedProductText = searchedProduct.getText();
-            // System.out.println(searchedProductText);
-            // if(searchedProductText.contains(product)){
-            //     status = true;
-            // }
-            // else{
-            //     status = false;
-            // }
-
-            return true;
+             return true;
         } catch (Exception e) {
             System.out.println("Error while searching for a product: " + e.getMessage());
             return false;
@@ -172,7 +162,7 @@ public class Home {
             int currentQty;
             for (WebElement item : cartContents) {
                 if (productName.contains(
-                        item.findElement(By.xpath("//*[@class='MuiBox-root css-1gjj37g']/div[1]")).getText())) {
+                    item.findElement(By.xpath("//div[text()= '" + productName + "']")).getText())) {
                     currentQty = Integer.valueOf(item.findElement(By.className("css-olyig7")).getText());
 
                     while (currentQty != quantity) {
@@ -202,6 +192,7 @@ public class Home {
             System.out.println(("exception occurred when updating cart"));
             return false;
         }
+
     }
 
     /*

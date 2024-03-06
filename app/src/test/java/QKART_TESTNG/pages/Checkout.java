@@ -90,6 +90,7 @@ public class Checkout {
         try {
             WebElement placeOrder = driver.findElement(By.xpath("//button[text()='PLACE ORDER']"));
             placeOrder.click();
+            
             return true;
 
         } catch (Exception e) {
