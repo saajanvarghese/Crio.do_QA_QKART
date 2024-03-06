@@ -724,34 +724,59 @@ public void TestCase08() throws InterruptedException {
             "Test Case 8: Verify that product added to cart is available when a new tab is opened",
             "DONE");
     //takeScreenshot(driver, "StartTestCase", "TestCase09");
+// Visit the Registration page and register a new user
+Register registration = new Register(driver);
+registration.navigateToRegisterPage();
+Assert.assertTrue(driver.getCurrentUrl().equals("https://crio-qkart-frontend-qa.vercel.app/register"), "Fail: Page has not been redirected to Register Page");
+       
+status = registration.registerUser("testUser", "testUser@123", true);
+if(status){
+ logStatus("Page Test", "User Registeration Successfully", "Success");
+}
+else{
+ logStatus("Page Test", "User Registeration Failed", "Failure");
+}
+Assert.assertTrue(status, "Failed to register new user");
 
-    Register registration = new Register(driver);
-    registration.navigateToRegisterPage();
-    status = registration.registerUser("testUser", "abc@123", true);
-    if (!status) {
-        logStatus("TestCase 8",
-                "Test Case Failure. Verify that product added to cart is available when a new tab is opened",
-                "FAIL");
-        //takeScreenshot(driver, "Failure", "TestCase09");
-    }
-    lastGeneratedUserName = registration.lastGeneratedUsername;
+// Save the last generated username
+lastGeneratedUserName = registration.lastGeneratedUsername;
 
-    Login login = new Login(driver);
-    login.navigateToLoginPage();
-    status = login.PerformLogin(lastGeneratedUserName, "abc@123");
-    if (!status) {
-        logStatus("Step Failure", "User Perform Login Failed", status ? "PASS" : "FAIL");
-        //takeScreenshot(driver, "Failure", "TestCase9");
-        logStatus("End TestCase",
-                "Test Case 8:   Verify that product added to cart is available when a new tab is opened",
-                status ? "PASS" : "FAIL");
-    }
+// Visit the login page and login with the previuosly registered user
+Login login = new Login(driver);
+login.navigateToLoginPage();
+Assert.assertTrue(driver.getCurrentUrl().equals("https://crio-qkart-frontend-qa.vercel.app/login"), "Fail: Page has not been redirected to Login Page");
+
+status = login.PerformLogin(lastGeneratedUserName, "testUser@123");
+if(status){
+ logStatus("Page Test", "User Login Successfully", "Success");
+}
+else{
+ logStatus("Page Test", "User Login Failed", "Failure");
+}
+Assert.assertTrue(status, "Failed to login with registered user");
 
     Home homePage = new Home(driver);
     homePage.navigateToHome();
 
+    Assert.assertTrue(driver.getCurrentUrl().contains("https://crio-qkart-frontend-qa.vercel.app"), "Fail: Page has not been redirected to HomePage");
+
     status = homePage.searchForProduct("YONEX");
+    if(status){
+        logStatus("Page Test", "Product Searched Successfully", "Success");
+    }
+    else{
+        logStatus("Page Test", "Product Search Unsuccessful", "Failure");
+    }
+    Assert.assertTrue(status, "Unable to search for given product");
+
     homePage.addProductToCart("YONEX Smash Badminton Racquet");
+    if(status){
+        logStatus("Page Test", "Product Added to Cart Successfully", "Success");
+    }
+    else{
+        logStatus("Page Test", "Error Occured while Adding Product to Cart", "Failure");
+    }
+    Assert.assertTrue(status, "Unable to Add Product To Cart");
 
     String currentURL = driver.getCurrentUrl();
 
@@ -764,6 +789,13 @@ public void TestCase08() throws InterruptedException {
 
     List<String> expectedResult = Arrays.asList("YONEX Smash Badminton Racquet");
     status = homePage.verifyCartContents(expectedResult);
+    if(status){
+        logStatus("Page Test", "Verification of Cart Contents Successful", "Success");
+    }
+    else{
+        logStatus("Page Test", "Error occured while verifying cart contents", "Failure");
+    }
+    Assert.assertTrue(status, "Unable to verify cart contents");
 
     driver.close();
 
@@ -773,8 +805,6 @@ public void TestCase08() throws InterruptedException {
     "Test Case 8: Verify that product added to cart is available when a new tab is opened",
     status ? "PASS" : "FAIL");
     //takeScreenshot(driver, "EndTestCase", "TestCase08");
-
-    //return status;
 }
 
 @Test(priority = 9,groups = {"Regression_Test" })
