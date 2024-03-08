@@ -47,5 +47,7 @@ out/
 /nbdist/
 /.nb-gradle/
 
+### Ignore Screenshots ###
+app/app/src/test/resources/screenshots/
 ### VS Code ### - needed for debugging
 # .vscode/
