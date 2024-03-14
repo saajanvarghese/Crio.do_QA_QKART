@@ -48,6 +48,10 @@ public class QKART_Tests {
        
     }
 
+    /*
+     * Testcase01: Verify a new user can successfully register
+     */
+
      @Test(description = "Verify user registration -login -logout", dataProvider = "data-provider", dataProviderClass = DP.class,  priority = 1, groups={"Sanity_test"}, enabled = true)
     public void TestCase01(String Username, String Password) throws InterruptedException {
         Boolean status;
