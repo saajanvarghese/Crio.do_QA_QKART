@@ -51,8 +51,9 @@ public class QKART_Tests {
     /*
      * Testcase01: Verify a new user can successfully register
      */
-    @Test(priority = 1,groups = { "Sanity_test" })
-    public void TestCase01() throws InterruptedException {
+
+     @Test(description = "Verify user registration -login -logout", dataProvider = "data-provider", dataProviderClass = DP.class,  priority = 1, groups={"Sanity_test"}, enabled = true)
+    public void TestCase01(String Username, String Password) throws InterruptedException {
         Boolean status;
         logStatus("Start TestCase", "Test Case 01: Verify User Registration", "DONE");
 
@@ -62,7 +63,7 @@ public class QKART_Tests {
        Assert.assertTrue(driver.getCurrentUrl().equals("https://crio-qkart-frontend-qa.vercel.app/register"), "Fail: Page has not been redirected to Register Page");
        takeScreenshot(driver, "Start TestCase: TestCase 01 - Success", "TestCase01 Successfully navigated to RegisterPage");             
        
-       status = registration.registerUser("testuser", "test@123", true);
+       status = registration.registerUser(Username, Password, true);
        if(status){
         logStatus("TestCase 01", "User Registeration Successfully", "Success");
         Assert.assertTrue(status, "Failed to register new user");
@@ -82,7 +83,7 @@ public class QKART_Tests {
        Assert.assertTrue(driver.getCurrentUrl().equals("https://crio-qkart-frontend-qa.vercel.app/login"), "Fail: Page has not been redirected to Login Page");
        takeScreenshot(driver, "TestCase 01 - Success", "TestCase01 Successfully navigated to Login Page"); 
 
-       status = login.PerformLogin(lastGeneratedUserName, "test@123");
+       status = login.PerformLogin(lastGeneratedUserName, Password);
        if(status){
         logStatus("TestCase 01", "User Login Successfully", "Success");
         Assert.assertTrue(status, "Failed to login with registered user");
@@ -103,7 +104,7 @@ public class QKART_Tests {
     }
     else{
         logStatus("TestCase 01", "User Logout Failed", "Failure");
-        takeScreenshot(driver, "TestCase 01 - Failure", "TestCase01 Failed to Logout the User");
+        //takeScreenshot(driver, "TestCase 01 - Failure", "TestCase01 Failed to Logout the User");
     }
        Assert.assertTrue(status, "Failed to login with registered user");
 
@@ -1193,7 +1194,7 @@ public void TestCase11() throws InterruptedException {
             takeScreenshot(driver, "EndTestCase", "EndTestCase 11");
 }
 
-  @AfterSuite
+  @AfterSuite(alwaysRun = true)
     public static void quitDriver() {
         System.out.println("quit()");
         driver.quit();
@@ -1205,18 +1206,24 @@ public void TestCase11() throws InterruptedException {
                 message, status));
     }
 
-    public static void takeScreenshot(WebDriver driver, String screenshotType, String description) {
+    public static String takeScreenshot(WebDriver driver, String screenshotType, String description) {
         String timestamp = String.valueOf(java.time.LocalDateTime.now());
         timestamp = timestamp.replace(":", "_");
         String fileName = String.format("screenshot_%s_%s_%s.png", timestamp, screenshotType, description);
     
-        File screenshotFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-        try {
-            FileUtils.copyFile(screenshotFile, new File(".//app/src/test/resources/screenshots/"+fileName));
+        File srcFile =((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+        try{
+        String fullPath = "D:\\Automation Crio projects\\Qkart\\johnsaj97-ME_QKART_QA_V2-master\\app\\screenshots";
+        File desFile = new File(fullPath + File.separator + fileName + ".png");
+        FileUtils.copyFile(srcFile,desFile);
+        String errFilePath = desFile.getAbsolutePath();
+        return errFilePath;
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            return null;
         }
-    } 
- }
+
+}
+}
 
