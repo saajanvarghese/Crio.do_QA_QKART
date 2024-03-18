@@ -63,7 +63,7 @@ public class QKART_Tests {
        Assert.assertTrue(driver.getCurrentUrl().equals("https://crio-qkart-frontend-qa.vercel.app/register"), "Fail: Page has not been redirected to Register Page");
        takeScreenshot(driver, "Start TestCase: TestCase 01 - Success", "TestCase01 Successfully navigated to RegisterPage");             
        
-       status = registration.registerUser(Username, Password, true);
+       status = registration.registerUser("testUser", "test@123", true);
        if(status){
         logStatus("TestCase 01", "User Registeration Successfully", "Success");
         Assert.assertTrue(status, "Failed to register new user");
@@ -113,7 +113,7 @@ public class QKART_Tests {
          takeScreenshot(driver, "EndTestCase", "TestCase01");
    }
 
-@Test(priority = 2 ,groups = { "Sanity_test" })
+   @Test(description = "Verify Re-Register of the same Register User", dataProvider = "data-provider", dataProviderClass = DP.class,  priority = 2, groups={"Sanity_test"}, enabled = true)
    public void TestCase02(String Username, String Password) throws InterruptedException {
     Boolean status;
     logStatus("Start Testcase", "Test Case 02: Verify User Registration with an existing username ", "DONE");
@@ -158,7 +158,7 @@ public class QKART_Tests {
     logStatus("End TestCase", "Test Case 2: Verify user Registration : ", status ? "FAIL" : "PASS");
 }
 
-@Test(priority = 3 ,groups = { "Sanity_test" })
+@Test(description = "Search Product Functionality -  Search for a Product", dataProvider = "data-provider", dataProviderClass = DP.class,  priority = 3, groups={"Sanity_test"}, enabled = true)
 public void TestCase03() throws InterruptedException {
     logStatus("TestCase 03", "Start test case : Verify functionality of search box ", "DONE");
         boolean status;
@@ -241,7 +241,7 @@ public void TestCase03() throws InterruptedException {
     }
 
 
-@Test(priority = 4,groups = {"Regression_Test"})
+    @Test(description = "Size Chart link Automation - Size chart link validation", dataProvider = "data-provider", dataProviderClass = DP.class,  priority = 4, groups={"Regression_Test"}, enabled = true)
 public void TestCase04() throws InterruptedException {
     logStatus("TestCase 4", "Start test case 04 : Verify the presence of size Chart", "DONE");
     boolean status = false;
@@ -318,7 +318,7 @@ public void TestCase04() throws InterruptedException {
         takeScreenshot(driver, "TestCase 04 - Success", "TestCase04 - Successfully validated TestCase04");
     }
 
-@Test(priority = 5,groups = {"Sanity_test" })
+    @Test(description = "Purchasing a product successfully", dataProvider = "data-provider", dataProviderClass = DP.class,  priority = 5, groups={"Sanity_test"}, enabled = true)
 public void TestCase05() throws InterruptedException {
     Boolean status;
     logStatus("Start TestCase", "Test Case 5: Verify Happy Flow of buying products", "DONE");
@@ -478,7 +478,7 @@ public void TestCase05() throws InterruptedException {
     takeScreenshot(driver, "End TestCase 05", "End TestCase 05"); 
 }
 
-@Test(priority = 6,groups = {"Regression_Test" })
+@Test(description = "Cart functionality - Verify that cart can be edited", dataProvider = "data-provider", dataProviderClass = DP.class,  priority = 6, groups={"Regression_Test"}, enabled = true)
 public void TestCase06() throws InterruptedException {
     Boolean status;
     Home homePage = new Home(driver);
@@ -650,7 +650,7 @@ public void TestCase06() throws InterruptedException {
     takeScreenshot(driver, "End TestCase06", "End TestCase06");
 }
 
-@Test(priority = 7,groups = {"Regression_Test" })
+@Test(description = "Wallet Balance Check - Verify that insufficient balance error is thrown when the wallet balance is not enough", dataProvider = "data-provider", dataProviderClass = DP.class,  priority = 7, groups={"Regression_Test"}, enabled = true)
 public void TestCase07() throws InterruptedException {
     Boolean status;
     logStatus("Start TestCase",
@@ -786,7 +786,7 @@ Assert.assertTrue(status, "Unable to Change Quantity inside Cart");
             takeScreenshot(driver, "TestCase 07 EndTestCase 07", "EndTestCase 07");
 }
 
-@Test(priority = 8,groups = {"Regression_Test" })
+@Test(description = "Switch Tab functionality - product added to cart is available when a new tab is opened", dataProvider = "data-provider", dataProviderClass = DP.class,  priority = 8, groups={"Regression_Test"}, enabled = true)
 public void TestCase08() throws InterruptedException {
     Boolean status = false;
 
@@ -889,7 +889,7 @@ Assert.assertTrue(status, "Failed to login with registered user");
     takeScreenshot(driver, "EndTestCase", "TestCase08");
 }
 
-@Test(priority = 9,groups = {"Regression_Test" })
+@Test(description = "Verification of Privacy Policy, About Us Page", dataProvider = "data-provider", dataProviderClass = DP.class,  priority = 9, groups={"Regression_Test"}, enabled = true)
 public void TestCase09() throws InterruptedException {
     Boolean status = false;
 
@@ -996,7 +996,7 @@ Assert.assertTrue(status, "Failed to login with registered user");
     takeScreenshot(driver, "EndTestCase", "TestCase09");
 }
 
-@Test(priority = 10,groups = { "Sanity_test" })
+@Test(description = "Verification of Contact US page", dataProvider = "data-provider", dataProviderClass = DP.class,  priority = 10, groups={"Sanity_test"}, enabled = true)
 public void TestCase10() throws InterruptedException {
     logStatus("Start TestCase",
             "Test Case 10: Verify that contact us option is working correctly ",
@@ -1037,7 +1037,7 @@ public void TestCase10() throws InterruptedException {
     takeScreenshot(driver, "EndTestCase", "TestCase10");
 }
 
-@Test(priority = 11,groups = { "Sanity_test" })
+@Test(description = "Verification of Advertisement link", dataProvider = "data-provider", dataProviderClass = DP.class,  priority = 11, groups={"Sanity_test"}, enabled = true)
 public void TestCase11() throws InterruptedException {
     Boolean status = false;
     logStatus("Start TestCase",
